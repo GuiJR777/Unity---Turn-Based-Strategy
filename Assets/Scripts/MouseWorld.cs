@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class MouseWorld : MonoBehaviour
 {
-    void Update()
+    [Header("Settings")]
+    [SerializeField] private LayerMask _layerMaskToHit;
+
+    // Singleton
+    private static MouseWorld _instance;
+
+    // MonoBehaviour Methods
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+        }
+    }
+
+    // Main Methods
+    public static Vector3 GetMouseWorldPosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.Log(Physics.Raycast(ray));
-
+        Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _instance._layerMaskToHit);
+        return raycastHit.point;
     }
 }

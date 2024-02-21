@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerUnit : MonoBehaviour
@@ -14,7 +16,7 @@ public class PlayerUnit : MonoBehaviour
     // MonoBehaviour Methods
     private void Update()
     {
-        MoveToTestPosition();
+        MoveToMousePosition();
     }
 
     private void FixedUpdate()
@@ -42,17 +44,14 @@ public class PlayerUnit : MonoBehaviour
         _targetPosition = targetPosition;
     }
 
-
-
-    // To Test TODO: Remove
-    private void MoveToTestPosition()
+    private void MoveToMousePosition()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButtonDown(0))
         {
-            Vector3 newPosition = new Vector3(Random.Range(-1, 1), 0, Random.Range(-1, 1)) + transform.position;
-
-            ChangeTargetPosition(newPosition);
+            Vector3 mousePosition = MouseWorld.GetMouseWorldPosition();
+            ChangeTargetPosition(mousePosition);
         }
     }
+
 
 }

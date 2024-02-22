@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerUnit : MonoBehaviour
 {
+    // Serializable Fields
+    [SerializeField] private Animator _animator;
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _rotateSpeed = 10f;
+    [SerializeField] private GameObject _selectionCircle;
+
     // Private Variables
     private Vector3 _targetPosition;
-
-    // Public Variables
-    public float moveSpeed = 5f;
 
     // Constants
     private const float _minDistance = 0.1f;
 
     // MonoBehaviour Methods
-    private void Update()
+    private void Awake()
     {
-        MoveToMousePosition();
+        _targetPosition = transform.position;
     }
 
     private void FixedUpdate()
@@ -24,14 +25,19 @@ public class PlayerUnit : MonoBehaviour
         if (Vector3.Distance(_targetPosition, transform.position) > _minDistance)
         {
             Move();
+            return;
         }
+
+        _animator.SetBool("IsWalking", false);
     }
 
     // Main Methods
     private void Move()
     {
+        _animator.SetBool("IsWalking", true);
         Vector3 moveDirection = GetMoveDirection();
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        transform.position += moveDirection * _moveSpeed * Time.fixedDeltaTime;
+        LerpRotation();
     }
 
     private Vector3 GetMoveDirection()
@@ -39,19 +45,25 @@ public class PlayerUnit : MonoBehaviour
         return (_targetPosition - transform.position).normalized;
     }
 
-    private void ChangeTargetPosition(Vector3 targetPosition)
+    private void LerpRotation()
+    {
+        Vector3 moveDirection = GetMoveDirection();
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+        targetRotation.x = 0;
+        targetRotation.z = 0;
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.fixedDeltaTime * _rotateSpeed);
+    }
+
+    public void ChangeTargetPosition(Vector3 targetPosition)
     {
         _targetPosition = targetPosition;
     }
 
-    private void MoveToMousePosition()
+    public void SetSelected(bool isSelected)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePosition = MouseWorld.GetMouseWorldPosition();
-            ChangeTargetPosition(mousePosition);
-        }
+        _selectionCircle.SetActive(isSelected);
     }
-
 
 }

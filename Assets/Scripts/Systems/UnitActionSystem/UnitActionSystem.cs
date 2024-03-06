@@ -44,6 +44,8 @@ public class UnitActionSystem : MonoBehaviour
     // Main Methods
     private void MoveUnitToMousePosition()
     {
+        if (_playerUnitSelected == null) { return; }
+
         Vector3 mousePosition = MouseWorld.GetMouseWorldPosition();
         _playerUnitSelected.ChangeTargetPosition(mousePosition);
     }
@@ -64,7 +66,14 @@ public class UnitActionSystem : MonoBehaviour
 
     private void ChangeSelectedUnit(PlayerUnit newSelectedUnit)
     {
-        _playerUnitSelected.SetSelected(false);
+        if (newSelectedUnit == _playerUnitSelected)
+        {
+            _playerUnitSelected.SetSelected(false);
+            _playerUnitSelected = null;
+            return;
+        }
+
+        _playerUnitSelected?.SetSelected(false);
         _playerUnitSelected = newSelectedUnit;
         _playerUnitSelected.SetSelected(true);
     }

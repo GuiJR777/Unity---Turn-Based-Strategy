@@ -25,7 +25,7 @@ public class LevelGrid : MonoBehaviour
         gridSystem.CreateDebugLabels(debugLabelPrefab);
     }
 
-    public void SetUnitAtGridPosition(PlayerUnit unit, GridPosition gridPosition)
+    public void AddUnitAtGridPosition(PlayerUnit unit, GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
         if (gridObject == null)
@@ -33,14 +33,10 @@ public class LevelGrid : MonoBehaviour
             return;
         }
 
-        if (gridObject.HasPlayerUnit())
-        {
-            return;
-        }
-        gridObject.SetPlayerUnit(unit);
+        gridObject.AddPlayerUnit(unit);
     }
 
-    public PlayerUnit GetUnitAtGridPosition(GridPosition gridPosition)
+    public List<PlayerUnit> GetUnitsAtGridPosition(GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
 
@@ -53,10 +49,10 @@ public class LevelGrid : MonoBehaviour
         {
             return null;
         }
-        return gridObject.GetPlayerUnit();
+        return gridObject.GetPlayerUnits();
     }
 
-    public void ClearUnitAtGridPosition(GridPosition gridPosition)
+    public void RemoveUnitAtGridPosition(PlayerUnit unit, GridPosition gridPosition)
     {
         GridObject gridObject = gridSystem.GetGridObject(gridPosition);
 
@@ -69,13 +65,14 @@ public class LevelGrid : MonoBehaviour
         {
             return;
         }
-        gridObject.ClearPlayerUnit();
+
+        gridObject.RemovePlayerUnit(unit);
     }
 
     public void UnitMovedAtGridPosition(PlayerUnit unit, GridPosition oldGridPosition, GridPosition newGridPosition)
     {
-        ClearUnitAtGridPosition(oldGridPosition);
-        SetUnitAtGridPosition(unit, newGridPosition);
+        RemoveUnitAtGridPosition(unit, oldGridPosition);
+        AddUnitAtGridPosition(unit, newGridPosition);
     }
 
     public GridPosition GetGridPosition(Vector3 worldPosition) => gridSystem.GetGridPosition(worldPosition);

@@ -6,37 +6,42 @@ public class GridObject
 {
     private GridSystem gridSystem;
     private GridPosition gridPosition;
-    private PlayerUnit playerUnit;
+    private List<PlayerUnit> playerUnits;
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)
     {
         this.gridSystem = gridSystem;
         this.gridPosition = gridPosition;
+        playerUnits = new List<PlayerUnit>();
     }
 
     public override string ToString()
     {
-        string playerUnitName = playerUnit == null ? "null" : playerUnit.Name;
-        return $"{gridPosition.ToString()},\n{playerUnitName}";
+        string playerUnitNames = "";
+        foreach (PlayerUnit playerUnit in playerUnits)
+        {
+            playerUnitNames += playerUnit.Name + "\n";
+        }
+        return $"{gridPosition}\n{playerUnitNames}";
     }
 
-    public void SetPlayerUnit(PlayerUnit playerUnit)
+    public void AddPlayerUnit(PlayerUnit playerUnit)
     {
-        this.playerUnit = playerUnit;
+        playerUnits.Add(playerUnit);
     }
 
-    public void ClearPlayerUnit()
+    public void RemovePlayerUnit(PlayerUnit playerUnit)
     {
-        playerUnit = null;
+        playerUnits.Remove(playerUnit);
     }
 
     public bool HasPlayerUnit()
     {
-        return playerUnit != null;
+        return playerUnits.Count > 0;
     }
 
-    public PlayerUnit GetPlayerUnit()
+    public List<PlayerUnit> GetPlayerUnits()
     {
-        return playerUnit;
+        return playerUnits;
     }
 }

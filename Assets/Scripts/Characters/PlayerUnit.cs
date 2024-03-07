@@ -28,7 +28,7 @@ public class PlayerUnit : MonoBehaviour
     private void Start()
     {
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.SetUnitAtGridPosition(this, _gridPosition);
+        LevelGrid.Instance.AddUnitAtGridPosition(this, _gridPosition);
     }
 
     private void  Update()

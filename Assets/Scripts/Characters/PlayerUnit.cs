@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerUnit : MonoBehaviour
@@ -10,15 +11,31 @@ public class PlayerUnit : MonoBehaviour
 
     // Private Variables
     private Vector3 _targetPosition;
+    private GridPosition _gridPosition;
 
     // Constants
     private const float _minDistance = 0.1f;
 
+    public string Name { get; private set; }
+
     // MonoBehaviour Methods
     private void Awake()
     {
+        Name = new RandomNameCreator().CreateRandomName();
         _targetPosition = transform.position;
     }
+
+    private void Start()
+    {
+        _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.SetUnitAtGridPosition(this, _gridPosition);
+    }
+
+    private void  Update()
+    {
+        UpdateGridPosition();
+    }
+
 
     private void FixedUpdate()
     {
@@ -40,10 +57,7 @@ public class PlayerUnit : MonoBehaviour
         LerpRotation();
     }
 
-    private Vector3 GetMoveDirection()
-    {
-        return (_targetPosition - transform.position).normalized;
-    }
+    private Vector3 GetMoveDirection() => (_targetPosition - transform.position).normalized;
 
     private void LerpRotation()
     {
@@ -56,14 +70,25 @@ public class PlayerUnit : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.fixedDeltaTime * _rotateSpeed);
     }
 
-    public void ChangeTargetPosition(Vector3 targetPosition)
+    private void UpdateGridPosition()
     {
-        _targetPosition = targetPosition;
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+
+        if (newGridPosition == null)
+        {
+            return;
+        }
+
+        if (_gridPosition == newGridPosition)
+        {
+            return;
+        }
+        LevelGrid.Instance.UnitMovedAtGridPosition(this, _gridPosition, newGridPosition);
+        _gridPosition = newGridPosition;
     }
 
-    public void SetSelected(bool isSelected)
-    {
-        _selectionCircle.SetActive(isSelected);
-    }
+    public void ChangeTargetPosition(Vector3 targetPosition) => _targetPosition = targetPosition;
+
+    public void SetSelected(bool isSelected) =>  _selectionCircle.SetActive(isSelected);
 
 }

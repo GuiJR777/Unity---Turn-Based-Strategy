@@ -16,6 +16,6 @@ public class GridDebugLabel : MonoBehaviour
 
     private void Update()
     {
-        textMeshPro.text = gridObject.GetGridPosition().ToString();
+        textMeshPro.text = gridObject.ToString();
     }
 }

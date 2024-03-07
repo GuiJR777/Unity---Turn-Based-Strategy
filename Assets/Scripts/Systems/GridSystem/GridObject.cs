@@ -6,6 +6,7 @@ public class GridObject
 {
     private GridSystem gridSystem;
     private GridPosition gridPosition;
+    private PlayerUnit playerUnit;
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)
     {
@@ -13,8 +14,29 @@ public class GridObject
         this.gridPosition = gridPosition;
     }
 
-    public GridPosition GetGridPosition()
+    public override string ToString()
     {
-        return gridPosition;
+        string playerUnitName = playerUnit == null ? "null" : playerUnit.Name;
+        return $"{gridPosition.ToString()},\n{playerUnitName}";
+    }
+
+    public void SetPlayerUnit(PlayerUnit playerUnit)
+    {
+        this.playerUnit = playerUnit;
+    }
+
+    public void ClearPlayerUnit()
+    {
+        playerUnit = null;
+    }
+
+    public bool HasPlayerUnit()
+    {
+        return playerUnit != null;
+    }
+
+    public PlayerUnit GetPlayerUnit()
+    {
+        return playerUnit;
     }
 }

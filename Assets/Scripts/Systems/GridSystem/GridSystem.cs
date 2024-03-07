@@ -57,6 +57,10 @@ public class GridSystem
 
     public GridObject GetGridObject(GridPosition gridPosition)
     {
+        if (gridPosition.x < 0 || gridPosition.x >= width || gridPosition.z < 0 || gridPosition.z >= height)
+        {
+            return null;
+        }
         return gridObjects[gridPosition.x, gridPosition.z];
     }
 

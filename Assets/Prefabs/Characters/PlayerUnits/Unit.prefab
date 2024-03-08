@@ -125,6 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4825492249065449630}
   - component: {fileID: 3497997202911294448}
+  - component: {fileID: 6271779705808317576}
   - component: {fileID: 465369919757620434}
   - component: {fileID: 7703119538279277129}
   m_Layer: 3
@@ -167,6 +168,18 @@ MonoBehaviour:
   _moveSpeed: 4
   _rotateSpeed: 8
   _selectionCircle: {fileID: 1250823873849553702}
+--- !u!114 &6271779705808317576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5482836292177791396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee8d4fba2a0046c1956c3d89baa6912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &465369919757620434
 CapsuleCollider:
   m_ObjectHideFlags: 0
